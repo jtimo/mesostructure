@@ -14,7 +14,7 @@ def collision_response(poly1, poly2, distance, normal_direction, vertices_m):
     # if the stones are already moving away from each other, there is no need to apply a collision response
     if normal_velocity < 0:
     
-        e = 0.1 # restitution coefficient for bounce back
+        e = 0.9 # restitution coefficient for bounce back
         m1, m2 = poly1.mass, poly2.mass
 
         I1, I2 = poly1.moment_of_inertia, poly2.moment_of_inertia
@@ -68,6 +68,8 @@ def surface_response(poly, surface_normal, point_on_surface):
     normal_velocity = np.dot(poly.velocity, normal_direction)
 
     if truth_value and normal_velocity < 0:
+        poly.color = (180, 0, 0)
+        
 
         r1 = poly.position - crit_vertex
 
@@ -103,6 +105,7 @@ def surface_response(poly, surface_normal, point_on_surface):
         v_t = vel_at_contact - v_n
 
         if np.linalg.norm(v_t) > 1e-6:
+            
             mu = 0.5  # friction coefficient
             t_dir = -v_t / np.linalg.norm(v_t)
             jt_max = mu * impulse  # friction cap
@@ -116,8 +119,3 @@ def surface_response(poly, surface_normal, point_on_surface):
 
             poly.velocity += (jt * t_dir / m1)
             poly.angular_velocity += I1_inv @ np.cross(r1, jt * t_dir)
-
-        # Gentle position correction if deeply embedded
-        #penetration_depth = -np.min(distances)
-        #if penetration_depth > 1.0:
-        #    poly.position += 0.1 * normal_direction  # small nudge out

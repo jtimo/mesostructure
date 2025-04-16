@@ -3,7 +3,7 @@ from impulse_response import collision_response
 
 from polyhedra import Polyhedra
 from grid import Grid
-from export_vtk import show_poly, generate_vtk_file
+from viz.export_vtk import show_poly, generate_vtk_file
 import numpy as np
 from gjk import collision_of_polyhedra
 from scipy.spatial import ConvexHull

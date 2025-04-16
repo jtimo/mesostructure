@@ -1,4 +1,4 @@
-from polyhedra import Polyhedra
+from core.polyhedra import Polyhedra
 import numpy as np
 from scipy.spatial import ConvexHull    
 

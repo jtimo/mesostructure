@@ -1,5 +1,5 @@
-from polyhedra import Polyhedra
-from simplex import Simplex
+from core.polyhedra import Polyhedra
+from core.simplex import Simplex
 import numpy as np
 from scipy.spatial import ConvexHull
 

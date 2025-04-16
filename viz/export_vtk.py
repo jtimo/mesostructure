@@ -3,9 +3,8 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import pyplot as plt
 import numpy as np
 from scipy.spatial import ConvexHull
-import random
+import glob, os
 import vtk
-
 
 import numpy as np
 
@@ -71,26 +70,40 @@ def generate_vtk_file(my_grid, filename):
     # Set the cell data in the unstructured grid
     grid.GetCellData().SetScalars(cell_data)
 
-    # Optional: export the bounding box if available
-    if  my_grid.box is not None:
-        bounds = my_grid.box  # [x, y, z]
+
+        # Optional: export the bounding box if available
+    if my_grid.box is not None:
+        half = my_grid.box.half
+        bounds = (-half[0], half[0], -half[1], half[1], -half[2], half[2])
         cube = vtk.vtkCubeSource()
-        cube.SetBounds(0, bounds[0], 0, bounds[1], 0, bounds[2])
+        cube.SetBounds(*bounds)
         cube.Update()
 
-        box_mapper = vtk.vtkPolyDataMapper()
-        box_mapper.SetInputConnection(cube.GetOutputPort())
-
-        box_actor = vtk.vtkActor()
-        box_actor.SetMapper(box_mapper)
-        box_actor.GetProperty().SetColor(1.0, 1.0, 1.0)
-        box_actor.GetProperty().SetOpacity(0.1)
-
-        # Write the box to a separate VTK file
         box_writer = vtk.vtkPolyDataWriter()
         box_writer.SetFileName(filename.replace(".vtk", "_box.vtk"))
         box_writer.SetInputData(cube.GetOutput())
         box_writer.Write()
+
+    # Optional: export the bounding box if available
+    # if  my_grid.box is not None:
+    #     bounds = my_grid.box  # [x, y, z]
+    #     cube = vtk.vtkCubeSource()
+    #     cube.SetBounds(0, bounds[0], 0, bounds[1], 0, bounds[2])
+    #     cube.Update()
+
+    #     box_mapper = vtk.vtkPolyDataMapper()
+    #     box_mapper.SetInputConnection(cube.GetOutputPort())
+
+    #     box_actor = vtk.vtkActor()
+    #     box_actor.SetMapper(box_mapper)
+    #     box_actor.GetProperty().SetColor(1.0, 1.0, 1.0)
+    #     box_actor.GetProperty().SetOpacity(0.1)
+
+    #     # Write the box to a separate VTK file
+    #     box_writer = vtk.vtkPolyDataWriter()
+    #     box_writer.SetFileName(filename.replace(".vtk", "_box.vtk"))
+    #     box_writer.SetInputData(cube.GetOutput())
+    #     box_writer.Write()
 
     # Write the unstructured grid to a VTK file
     writer = vtk.vtkUnstructuredGridWriter()
@@ -101,6 +114,13 @@ def generate_vtk_file(my_grid, filename):
 # Usage example:
 # generate_vtk_file(my_grid, vectors, "output.vtk")
 
+def remove_animations():
+    animations = glob.glob('./data/animations/*')
+    for animation in animations:
+        try:
+            os.remove(animation)
+        except FileNotFoundError:
+            pass
 
 def show_poly(grid):
 

@@ -1,10 +1,12 @@
-from grid import Grid
-from polyhedra import Polyhedra
-from simulate_dynamics import simulate
+from core.grid import Grid
+from core.polyhedra import Polyhedra
+from core.simulate_dynamics import simulate
 import numpy as np
+from viz.export_vtk import remove_animations
 
+remove_animations()
 # Static grid just to hold one object
-grid = Grid(width=100, height=100, depth=100, cell_size=50, box=np.array([100, 100, 100]))
+grid = Grid(width=100, height=100, depth=100, cell_size=50)
 
 # Define a tetrahedron
 points = np.array([
@@ -29,7 +31,7 @@ simulate(
     grid,
     dt=0.05,
     gravity=0.0,
-    damping=0.0,
-    steps=200,
-    box=np.array([100, 100, 100])
-)
+    angular_damping=1.0,
+    linear_drag=0.0,
+    rotational_drag=0.0,
+    steps=200)

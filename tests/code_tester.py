@@ -1,19 +1,17 @@
-
-from impulse_response import collision_response
-from polyhedra import Polyhedra
-from grid import Grid
-from export_vtk import show_poly, generate_vtk_file
+from core.grid import Grid
+from core.polyhedra import Polyhedra
+from core.simulate_dynamics import simulate
 import numpy as np
-from scipy.spatial import ConvexHull
-from scipy.spatial.transform import Rotation
-from simulate_dynamics import simulate
-from tqdm import tqdm
+from viz.export_vtk import remove_animations
+
+remove_animations()
 
 #----------------------------------------------------------------
 # Specify the simulation environment
 w, h, d = 200, 200, 200
 
-grid = Grid(width=w, height=h, depth=d, cell_size=100) # keep cell_size big !
+box_size = 200
+grid = Grid(width=w, height=h, depth=d, cell_size=100,  box=np.array([box_size, box_size, box_size])) # keep cell_size big !
 #----------------------------------------------------------------
 
 
@@ -78,7 +76,7 @@ grid.add_polyhedra(polyhedra_3)
 
 #----------------------------------------------------------------------------
 # simulate the motion of the stones for 10 time steps with a time step of 0.1
-simulate(grid, dt=0.08, gravity=-9.81, damping=0.00, steps=500, box=None)
+simulate(grid, dt=0.05, gravity=-9.81, steps=500, box=np.array([box_size, box_size, box_size]))
 #----------------------------------------------------------------------------
 
 

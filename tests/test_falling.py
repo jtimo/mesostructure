@@ -1,6 +1,6 @@
-from grid import Grid
-from polyhedra import Polyhedra
-from simulate_dynamics import simulate
+from core.grid import Grid
+from core.polyhedra import Polyhedra
+from core.simulate_dynamics import simulate
 import numpy as np
 
 # Create grid

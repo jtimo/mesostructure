@@ -54,7 +54,7 @@ class Polyhedra:
         # no update
         self.mass = mass
         self.moment_of_inertia = 0
-        self.color = (255, 0, 0)
+        self.color = (0, 0, 255)
         self.settled = False
 
         # record state history
